@@ -1,5 +1,9 @@
 package com.example.camila.lab6
 
+// Paula Camila Gonzalez Ortega - Carnet 18398
+// * Seccion 10
+// * Esta clase permite manejar las canciones ya que funciona como un adaptador
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View

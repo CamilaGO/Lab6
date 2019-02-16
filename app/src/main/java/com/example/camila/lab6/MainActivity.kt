@@ -1,5 +1,12 @@
 package com.example.camila.lab6
 
+// Paula Camila Gonzalez Ortega - Carnet 18398
+// * Seccion 10
+// * En el Main se presenta un arraylist con las canciones guardadas en
+// * el telefono para que al cliquear una se reproduzca. Se puede dar siguiente cancion,
+// * anterior y pausa. Permite que el usuario cierre la app y la musica continue reproducciendose
+
+
 import android.content.*
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -47,7 +54,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerControl {
         setController()
     }
 
-    //connect to the service
+    //se hace la conexion con el servicio
     private val musicConnection = object : ServiceConnection {
 
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
@@ -105,13 +112,13 @@ class MainActivity : AppCompatActivity(), MediaPlayerControl {
         controller!!.isEnabled = true
     }
 
-    //play next
+    //reproducir siguiente cancion de la lista
     private fun playNext() {
         musicSrv!!.playNext()
         controller!!.show(0)
     }
 
-    //play previous
+    //reproducir cancion anterior de la lista
     private fun playPrev() {
         musicSrv!!.playPrev()
         if(playbackPaused){
@@ -166,6 +173,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerControl {
         musicSrv!!.seek(pos)
     }
 
+
     override fun start() {
         musicSrv!!.go()
 
@@ -174,7 +182,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerControl {
     override fun canPause(): Boolean {
         return true
     }
-    //Terminan metodos de MusicController override//
+    //TERMINAN METODOS OVERRIDE DE MUSICCONTROLLER
 
 
     fun songPicked(view: View) {

@@ -1,7 +1,13 @@
 package com.example.camila.lab6
+// Paula Camila Gonzalez Ortega - Carnet 18398
+// * Seccion 10
+// * Esta clase extiende de servicio y permite ejecutar un servicio de musica
+// * en el programa
 
-import android.app.Service
+
+import android.app.*
 import android.content.ContentUris
+import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
@@ -28,14 +34,22 @@ class MusicService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErr
     private var songPosn: Int = 0
     private val NOTIFY_ID = 1
     private val musicBind = MusicBinder()
-    private var shuffle = false
     private var rand: Random? = null
 
     override fun onCreate() {
         //se crea el servicio
         super.onCreate()
         initMusicPlayer()
-        rand = Random()
+    }
+
+    fun initMusicPlayer(){
+        //set player properties
+        player.setWakeMode(applicationContext,
+            PowerManager.PARTIAL_WAKE_LOCK)
+        player.setAudioStreamType(AudioManager.STREAM_MUSIC)
+        player.setOnPreparedListener(this)
+        player.setOnCompletionListener(this)
+        player.setOnErrorListener(this)
     }
 
     override fun onBind(arg0: Intent): IBinder? {
@@ -57,7 +71,6 @@ class MusicService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErr
     override fun onPrepared(mp: MediaPlayer?) {
         //start playback
         mp?.start()
-
     }
 
     override fun onUnbind(intent: Intent): Boolean {
@@ -66,15 +79,6 @@ class MusicService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErr
         return false
     }
 
-    fun initMusicPlayer(){
-        //set player properties
-        player.setWakeMode(applicationContext,
-            PowerManager.PARTIAL_WAKE_LOCK)
-        player.setAudioStreamType(AudioManager.STREAM_MUSIC)
-        player.setOnPreparedListener(this)
-        player.setOnCompletionListener(this)
-        player.setOnErrorListener(this)
-    }
 
     //Se pasan la lista de canciones del main al servicio
     fun setList(theSongs: ArrayList<Song>) {

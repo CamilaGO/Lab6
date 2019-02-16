@@ -4,13 +4,14 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:orientation="vertical"
-              android:background="#FF330000"
-              tools:context=".MainActivity" >
+              android:background="#0A0110"
+              tools:context=".MainActivity">
 
     <ListView
             android:id="@+id/song_list"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content" android:headerDividersEnabled="false"
+            android:cacheColorHint="@color/lineas" android:divider="@color/lineas">
     </ListView>
 
 </LinearLayout>
