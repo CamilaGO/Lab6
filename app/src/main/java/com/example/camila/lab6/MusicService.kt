@@ -12,13 +12,20 @@ import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Binder
-import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import android.provider.MediaStore
-import android.support.annotation.RequiresApi
 import android.util.Log
 import java.util.*
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.support.v4.app.NotificationCompat
+
+
+
+
+
+
 
 @Suppress("DEPRECATION")
 class MusicService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
@@ -34,13 +41,15 @@ class MusicService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErr
     private var songPosn: Int = 0
     private val NOTIFY_ID = 1
     private val musicBind = MusicBinder()
-    private var rand: Random? = null
+
 
     override fun onCreate() {
         //se crea el servicio
         super.onCreate()
         initMusicPlayer()
+
     }
+
 
     fun initMusicPlayer(){
         //set player properties
@@ -70,7 +79,29 @@ class MusicService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErr
 
     override fun onPrepared(mp: MediaPlayer?) {
         //start playback
-        mp?.start()
+        val start = mp?.start()
+        //Se crea la notificacion permanente que redirecciona a la app
+        val mBuilder = NotificationCompat.Builder(this)
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setContentTitle("Reproductor de musica")
+            .setOngoing(true) // <-- esto hace la notificacion permanente
+            .setContentText(songTitle)
+
+
+        val notificationIntent =
+            Intent(this, MainActivity::class.java) //<-- La clase que se abrira al hacer click en la notificacion
+        notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+
+        val resultPendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            notificationIntent,
+            0
+        ) //<-- creas un Pending intent con lo asignado en el intent
+        mBuilder.setContentIntent(resultPendingIntent) //<-- agregas el pendindIntent a tu notificacion
+        val mNotificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        mNotificationManager.notify(1, mBuilder.build()) // <-- muestras la notificacion
     }
 
     override fun onUnbind(intent: Intent): Boolean {
