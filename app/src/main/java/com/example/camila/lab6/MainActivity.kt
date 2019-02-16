@@ -1,26 +1,21 @@
 package com.example.camila.lab6
 
+import android.content.*
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import android.net.Uri;
-import android.content.ContentResolver;
-import android.database.Cursor;
+import android.widget.ListView
+import android.net.Uri
 import android.view.View
-import android.widget.ListView;
-import android.widget.MediaController.MediaPlayerControl;
-import android.os.IBinder;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
+import android.widget.MediaController
+import android.widget.MediaController.MediaPlayerControl
+import java.util.*
+import com.example.camila.lab6.MusicService.MusicBinder
+import android.os.IBinder
+import android.content.Context.BIND_AUTO_CREATE
 import android.os.Build
 import android.support.annotation.RequiresApi
-import android.view.MenuItem;
-import com.example.camila.lab6.MusicService.MusicBinder;
-
+import android.view.Menu
+import android.view.MenuItem
 
 
 class MainActivity : AppCompatActivity(), MediaPlayerControl {
@@ -102,7 +97,9 @@ class MainActivity : AppCompatActivity(), MediaPlayerControl {
 
     private fun setController() {
         controller = MusicController(this)
-        controller!!.setPrevNextListeners(View.OnClickListener { playNext() }, View.OnClickListener { playPrev() })
+        controller!!.setPrevNextListeners(
+            { playNext() },
+            { playPrev() })
         controller!!.setMediaPlayer(this)
         controller!!.setAnchorView(findViewById(R.id.song_list))
         controller!!.isEnabled = true
@@ -139,7 +136,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerControl {
     }
 
     override fun getBufferPercentage(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return 0
     }
 
     override fun getCurrentPosition(): Int {
@@ -187,7 +184,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerControl {
             setController()
             playbackPaused=false
         }
-        controller!!.show(0);
+        controller!!.show(0)
     }
 
 

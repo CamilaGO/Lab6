@@ -14,6 +14,7 @@ import android.support.annotation.RequiresApi
 import android.util.Log
 import java.util.*
 
+@Suppress("DEPRECATION")
 class MusicService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
     MediaPlayer.OnCompletionListener{
 
@@ -65,7 +66,7 @@ class MusicService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErr
         return false
     }
 
-    private fun initMusicPlayer(){
+    fun initMusicPlayer(){
         //set player properties
         player.setWakeMode(applicationContext,
             PowerManager.PARTIAL_WAKE_LOCK)
@@ -92,6 +93,8 @@ class MusicService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErr
         val playSong = songs[songPosn]
         //get artist
         songArtist=playSong.getArtist()
+        //get title
+        songTitle=playSong.getTitle()
         //get id
         val currSong = playSong.getID()
         //set uri
@@ -138,7 +141,7 @@ class MusicService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErr
 
     fun playPrev() {
         songPosn--
-        if (songPosn>0)
+        if (songPosn<0)
             songPosn = songs.size -1
         playSong()
     }
